@@ -643,12 +643,14 @@ void BinarySearchTree<Key, Value>::clearHelper(Node<Key, Value>* current)
 
     if(current == NULL)
     {
-        return;
+        
     }
-
-    clearHelper(current->getLeft());
-    clearHelper(current->getRight());
-		delete current;
+    else {
+        clearHelper(current->getLeft());
+        clearHelper(current->getRight());
+        delete current;
+    }
+    
 
 }
 
@@ -666,6 +668,7 @@ void BinarySearchTree<Key, Value>::clear()
 		// 	delete root_;
 		// }
     clearHelper(root_);
+    root_ = NULL;
 
 }
 
