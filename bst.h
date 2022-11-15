@@ -466,7 +466,7 @@ void BinarySearchTree<Key, Value>::insert(const std::pair<const Key, Value> &key
 
   while(current != NULL)
   {
-		if(keyValuePair.first < current->getKey())
+		if(keyValuePair.first < current->getKey()) //inserting left if less than
 		{
 			if(current->getLeft() == NULL)
             {
@@ -479,7 +479,7 @@ void BinarySearchTree<Key, Value>::insert(const std::pair<const Key, Value> &key
                 current = current->getLeft();
             }
 		}
-		else if(keyValuePair.first > current->getKey())
+		else if(keyValuePair.first > current->getKey()) //inserting right if greater than
 		{
 			if(current->getRight() == NULL)
             {
@@ -494,7 +494,7 @@ void BinarySearchTree<Key, Value>::insert(const std::pair<const Key, Value> &key
 		}
 		else//if(keyValuePair.first == current->getKey())
 		{
-			current->setValue(keyValuePair.second);
+			current->setValue(keyValuePair.second); //updating value if key found
 			return;
 		}
   }
@@ -520,24 +520,24 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
 
   //Node <Key, Value> * t2 = current -> getParent(); 
 
-	if((current->getLeft() != NULL && current->getRight() != NULL))
+	if((current->getLeft() != NULL && current->getRight() != NULL)) //check if 2 children
 	{
 		nodeSwap(current, predecessor(current));
 	}
-	if(current->getLeft() != NULL && current->getRight() == NULL)
+	if(current->getLeft() != NULL && current->getRight() == NULL) //then one left
 	{
 		temp = current->getLeft();
 	}
-	else if(current->getLeft() == NULL && current->getRight() != NULL)
+	else if(current->getLeft() == NULL && current->getRight() != NULL) //then one right
 	{
 		temp = current->getRight();
 	}
-	else if(current->getLeft() == NULL && current->getRight() == NULL)
+	else if(current->getLeft() == NULL && current->getRight() == NULL) //then no children
 	{
 		temp = NULL;
 	}
 
-	Node <Key, Value> * t2 = current -> getParent(); 
+	Node <Key, Value> * t2 = current -> getParent();  //changing pointers
     if(t2 == NULL)
 		{
         root_ = temp; 
@@ -559,21 +559,15 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
 
 template<class Key, class Value>
 Node<Key, Value>*
-BinarySearchTree<Key, Value>::successor(Node<Key, Value>* current) //do we have to account for when no predecessor
+BinarySearchTree<Key, Value>::successor(Node<Key, Value>* current) 
 {
     // TODO
-    //Node<Key, Value>* parent;
-
-		// if(root_ == NULL)
-		// {
-		// 	return;
-		// }
 
     if(current->getRight() != NULL)
     {
         Node<Key, Value>* c = current->getRight();
     
-        while(c != NULL)
+        while(c != NULL) //find leaf
         {
             if(c->getLeft() == NULL)
             {
@@ -585,7 +579,7 @@ BinarySearchTree<Key, Value>::successor(Node<Key, Value>* current) //do we have 
     else if(current->getRight() == NULL)
     {
         Node<Key, Value>* c = current;
-        while(true)
+        while(c->getParent()!=NULL)
         {
             if((c->getParent())->getLeft() == c)
             {
@@ -603,14 +597,8 @@ Node<Key, Value>*
 BinarySearchTree<Key, Value>::predecessor(Node<Key, Value>* current) //do we have to account for when no predecessor
 {
     // TODO
-    //Node<Key, Value>* parent;
 
-		// if(root_ == NULL)
-		// {
-		// 	return;
-		// }
-
-    if(current->getLeft() != NULL)
+    if(current->getLeft() != NULL) //find leaf
     {
         Node<Key, Value>* c = current->getLeft();
     
@@ -620,10 +608,10 @@ BinarySearchTree<Key, Value>::predecessor(Node<Key, Value>* current) //do we hav
         }
 				return c;
     }
-    else if(current->getLeft() == NULL)
+    else
     {
         Node<Key, Value>* c = current;
-        while(true)
+        while(c->getParent()!=NULL)
         {
             if((c->getParent())->getRight() == c)
             {
@@ -765,10 +753,10 @@ bool BinarySearchTree<Key, Value>::isBalanced() const
         return true;
     }
 
-		if((root_->getLeft() != NULL && root_->getRight() == NULL) || (root_->getRight() != NULL && root_->getLeft() == NULL))
-		{
-			return false;
-		}
+	if((root_->getLeft() != NULL && root_->getRight() == NULL) || (root_->getRight() != NULL && root_->getLeft() == NULL))
+	{
+        return false;
+    }
 
     int left = cHeight(root_->getLeft());
     int right = cHeight(root_->getRight());
